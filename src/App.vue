@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <list-contacts />
   </div>
 </template>
+
+<script>
+import ListContacts from './views/ListContacts.vue';
+export default {
+  components: { ListContacts },
+};
+</script>
 
 <style lang="scss">
 #app {
