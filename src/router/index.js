@@ -11,9 +11,9 @@ const routes = [
   //   component: Home
   // },
   {
-    path: '/list_contacts',
-    name: 'ListContacts',
-    component: () => import('../views/ListContacts.vue'),
+    path: '/contacts_list',
+    name: 'ContactsList',
+    component: () => import('../views/ContactsList.vue'),
   },
 ];
 
