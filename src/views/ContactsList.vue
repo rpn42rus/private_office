@@ -3,17 +3,14 @@
     <div class="page-wrap">
       <div class="page-title">Список контактов</div>
       <div class="page-content">
-        <div class="grid-layout" v-if="!loading">
+        <div class="grid-layout">
           <contact-card
             v-for="character in characters"
             :key="character.id"
             :character="character"
           />
+          <div v-if="characters.length" v-observe-visibility="loadDataOnScroll"></div>
         </div>
-      </div>
-      <div class="pagination-controls">
-        <div class="prev-contacts pagination-btn" @click="goToPage(info.prev)">prev</div>
-        <div class="next-contacts pagination-btn" @click="goToPage(info.next)">next</div>
       </div>
       <preloader :isShowPreloader="loading" />
     </div>
@@ -23,35 +20,65 @@
 <script>
 import ContactCard from '../components/ContactCard';
 import Preloader from '../components/Preloader.vue';
+
 export default {
   components: { ContactCard, Preloader },
   name: 'ContactsList',
 
   data() {
     return {
-      info: {},
-      characters: [],
-      loading: false,
+      characters: [], //персонажи(контакты)
+      currentPage: 1, // текущая страница
+      lastPage: 1, // последняя страница
+      loading: false, // флаг для отображения preloader
+      searchText: '', // искомый текст
+      error: '', // флаг ошибки
     };
   },
 
   mounted() {
-    this.loading = true;
-    this.axios.get('https://rickandmortyapi.com/api/character').then(response => {
-      this.characters = response.data.results;
-      this.info = response.data.info;
-      this.loading = false;
-    });
+    this.getContactData();
   },
 
   methods: {
-    goToPage(page) {
+    /**
+     * Метод получение данных о контактах
+     * @param {Number} page
+     */
+    async getContactData() {
+      if (this.currentPage > this.lastPage) {
+        return;
+      }
       this.loading = true;
-      this.axios.get(`${page}`).then(response => {
-        this.characters = response.data.results;
-        this.info = response.data.info;
-        this.loading = false;
-      });
+      await this.axios
+        .get(
+          `https://rickandmortyapi.com/api/character/?name=${this.searchText}&page=${this.currentPage}`,
+        )
+        .then(response => {
+          this.characters.push(...response.data.results);
+          this.lastPage = response.data.info.pages;
+          this.error = false;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.characters = [];
+          this.error = true;
+          this.loading = false;
+        });
+    },
+
+    /**
+     * Метод подгружает данные по мере прокрутки страницы
+     * @param {Boolean} isVisible
+     */
+    loadDataOnScroll(isVisible) {
+      console.log('isVisible :>> ', isVisible);
+      if (!isVisible) {
+        return;
+      } else {
+        this.currentPage++;
+        this.getContactData();
+      }
     },
   },
 };
@@ -75,33 +102,11 @@ export default {
     .page-content {
       flex: 1 1 auto;
       .grid-layout {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        grid-gap: 2rem;
-        gap: 2rem;
         display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 100px;
       }
-    }
-  }
-
-  .pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 30px 0;
-    .pagination-btn {
-      padding: 10px 30px;
-      border: 2px solid rgb(41, 41, 41);
-      border-radius: 10px;
-      &:hover {
-        cursor: pointer;
-        background-color: rgb(41, 41, 41);
-        color: #fff;
-      }
-    }
-    .prev-contacts {
-      margin-right: 15px;
-    }
-    .next-contacts {
     }
   }
 }
