@@ -32,19 +32,21 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
-  border-radius: 5px;
   transition: all 0.2s ease-in;
   -webkit-box-shadow: 4px 4px 10px 0px rgba(50, 50, 50, 0.76);
   -moz-box-shadow: 4px 4px 10px 0px rgba(50, 50, 50, 0.76);
   box-shadow: 4px 4px 10px 0px rgba(50, 50, 50, 0.76);
+  border-radius: 5px;
   &:hover {
     cursor: pointer;
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.7);
     transform: scale(1.02);
+    border-radius: 5px;
   }
   &:hover .card__info-block {
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
   }
   .card-image {
     display: flex;
@@ -61,6 +63,7 @@ export default {
       margin-left: auto;
       margin-right: auto;
       flex-shrink: 0;
+      border-radius: 5px;
     }
   }
   .card__info-block {
@@ -75,7 +78,6 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     transition: all 0.2s ease;
-
     .card-name {
       color: #fff;
       font-size: 26px;

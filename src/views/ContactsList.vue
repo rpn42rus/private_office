@@ -4,6 +4,10 @@
     <div class="grid-layout">
       <contact-card v-for="character in characters" :key="character.id" :character="character" />
     </div>
+    <div class="pagination-controls">
+      <div class="prev-contacts pagination-btn" @click="goToPage(info.prev)">prev</div>
+      <div class="next-contacts pagination-btn" @click="goToPage(info.next)">next</div>
+    </div>
   </div>
 </template>
 
@@ -15,14 +19,26 @@ export default {
 
   data() {
     return {
+      info: {},
       characters: [],
+      nextPage: null,
     };
   },
 
   mounted() {
-    this.axios
-      .get('https://rickandmortyapi.com/api/character')
-      .then(response => (this.characters = response.data.results));
+    this.axios.get('https://rickandmortyapi.com/api/character').then(response => {
+      this.characters = response.data.results;
+      this.info = response.data.info;
+    });
+  },
+
+  methods: {
+    goToPage(page) {
+      this.axios.get(`${page}`).then(response => {
+        this.characters = response.data.results;
+        this.info = response.data.info;
+      });
+    },
   },
 
   // created: async function() {
@@ -45,6 +61,7 @@ export default {
   .title {
     margin: 50px 0;
     font-size: 32px;
+    color: rgb(41, 41, 41);
     font-weight: bold;
   }
   .grid-layout {
@@ -52,6 +69,27 @@ export default {
     grid-gap: 2rem;
     gap: 2rem;
     display: grid;
+  }
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+    .pagination-btn {
+      padding: 10px 30px;
+      border: 2px solid rgb(41, 41, 41);
+      border-radius: 10px;
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(41, 41, 41);
+        color: #fff;
+      }
+    }
+    .prev-contacts {
+      margin-right: 15px;
+    }
+    .next-contacts {
+    }
   }
 }
 </style>
