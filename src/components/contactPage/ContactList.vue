@@ -29,7 +29,7 @@
         </div>
       </div>
       <!-- Модальное окно -->
-      <transition name="bounce">
+      <transition name="modal-transition">
         <contact-modal v-if="showModalContact" @closeModal="closeModal" />
       </transition>
 
@@ -204,24 +204,12 @@ export default {
 }
 
 .modal-transition-enter-active {
-  transition: all 0.3s ease;
+  animation: modal-transition-in 0.5s;
 }
-.modal-transition-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+.modal-transitionleave-active {
+  animation: modal-transition-in 0.5s reverse;
 }
-.modal-transition-enter,
-.modal-transition-leave-to {
-  transform: translateX(10px);
-  opacity: 0;
-}
-
-.bounce-enter-active {
-  animation: bounce-in 0.5s;
-}
-.bounce-leave-active {
-  animation: bounce-in 0.5s reverse;
-}
-@keyframes bounce-in {
+@keyframes modal-transition-in {
   0% {
     transform: scale(0);
   }
