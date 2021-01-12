@@ -1,12 +1,24 @@
 <template>
   <div>
-    <input class="search__input" type="text" placeholder="Поиск контакта" />
+    <input
+      class="search__input"
+      type="text"
+      placeholder="Поиск контакта"
+      v-model="searchText"
+      @input="$emit('getSearchResult', searchText)"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: 'SearchField',
+
+  data() {
+    return {
+      searchText: '',
+    };
+  },
 };
 </script>
 

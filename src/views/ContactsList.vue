@@ -7,18 +7,24 @@
           <div class="add-user__wrapper">
             <router-link class="add-user__btn" to="/new_contact">+ Добавить контакт</router-link>
           </div>
-          <search-field class="search__wrapper" />
+          <search-field
+            class="search__wrapper"
+            @getSearchResult="(searchText = $event), getContactData(1)"
+          />
         </div>
       </div>
 
       <div class="page__content">
-        <div class="grid-layout">
+        <div class="grid-layout" v-if="characters.length">
           <contact-card
             v-for="character in characters"
             :key="character.id"
             :character="character"
           />
-          <div v-if="characters.length" v-observe-visibility="loadDataOnScroll"></div>
+          <div v-observe-visibility="loadDataOnScroll"></div>
+        </div>
+        <div class="no-result" v-else>
+          Совпадений не найдено...
         </div>
       </div>
       <preloader :isShowPreloader="loading" />
@@ -47,7 +53,7 @@ export default {
   },
 
   mounted() {
-    this.getContactData();
+    this.getContactData(1);
   },
 
   methods: {
@@ -55,14 +61,20 @@ export default {
      * Метод получение данных о контактах
      * @param {Number} page
      */
-    async getContactData() {
-      if (this.currentPage > this.lastPage) {
+    async getContactData(page) {
+      if (page > this.lastPage) {
         return;
       }
       this.loading = true;
+
+      if (page == 1) {
+        this.currentPage = 1;
+        this.characters = [];
+      }
+
       await this.axios
         .get(
-          `https://rickandmortyapi.com/api/character/?name=${this.searchText}&page=${this.currentPage}`,
+          `https://rickandmortyapi.com/api/character/?page=${this.currentPage}&name=${this.searchText}`,
         )
         .then(response => {
           this.characters.push(...response.data.results);
@@ -86,7 +98,7 @@ export default {
         return;
       } else {
         this.currentPage++;
-        this.getContactData();
+        this.getContactData(this.currentPage);
       }
     },
   },
@@ -154,6 +166,10 @@ export default {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 2rem;
         margin-bottom: 100px;
+      }
+      .no-result {
+        font-size: 24px;
+        margin: 20px 0;
       }
     }
   }
