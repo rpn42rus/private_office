@@ -1,24 +1,20 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import Home from '../views/Home.vue';
+import Home from '../views/Home.vue';
+import Contacts from '../views/Contacts.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   component: Home
-  // },
   {
-    path: '/contacts_list',
-    name: 'ContactsList',
-    component: () => import('../views/ContactsList.vue'),
+    path: '/',
+    name: 'Home',
+    component: Home,
   },
   {
-    path: '/new_contact',
-    name: 'NewContact',
-    component: () => import('../components/NewContact.vue'),
+    path: '/contacts',
+    name: 'Contacts',
+    component: Contacts,
   },
 ];
 

@@ -5,7 +5,7 @@
         <div class="page__header-title">Список контактов</div>
         <div class="page__header-row">
           <div class="add-user__wrapper">
-            <router-link class="add-user__btn" to="/new_contact">+ Добавить контакт</router-link>
+            <div class="add-user__btn">+ Добавить контакт</div>
           </div>
           <search-field
             class="search__wrapper"
@@ -145,7 +145,6 @@ export default {
             margin-bottom: 20px;
           }
           .add-user__btn {
-            text-decoration: none;
             color: #fff;
             padding: 10px;
             border-radius: 10px;
@@ -154,6 +153,7 @@ export default {
             &:hover {
               background-color: rgb(22, 138, 22);
               transform: scale(1.02);
+              cursor: pointer;
             }
           }
         }
