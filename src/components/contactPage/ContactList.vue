@@ -15,7 +15,7 @@
       </div>
 
       <div class="page__content">
-        <div class="grid-layout" v-if="characters.length">
+        <div class="grid-layout" v-if="characters.length && !error">
           <contact-card
             v-for="character in characters"
             :key="character.id"
@@ -23,7 +23,7 @@
           />
           <div v-observe-visibility="loadDataOnScroll"></div>
         </div>
-        <div class="no-result" v-else>
+        <div class="no-result" v-else-if="!characters.length && error">
           Совпадений не найдено...
         </div>
       </div>
