@@ -1,8 +1,17 @@
 <template>
   <div class="container">
-    <div class="page-wrap">
-      <div class="page-title">Список контактов</div>
-      <div class="page-content">
+    <div class="page__wrapper">
+      <div class="page__header">
+        <div class="page__header-title">Список контактов</div>
+        <div class="page__header-row">
+          <div class="add-user__wrapper">
+            <router-link class="add-user__btn" to="/new_contact">+ Добавить контакт</router-link>
+          </div>
+          <search-field class="search__wrapper" />
+        </div>
+      </div>
+
+      <div class="page__content">
         <div class="grid-layout">
           <contact-card
             v-for="character in characters"
@@ -20,9 +29,10 @@
 <script>
 import ContactCard from '../components/ContactCard';
 import Preloader from '../components/Preloader.vue';
+import SearchField from '../components/SearchField.vue';
 
 export default {
-  components: { ContactCard, Preloader },
+  components: { ContactCard, Preloader, SearchField },
   name: 'ContactsList',
 
   data() {
@@ -72,7 +82,6 @@ export default {
      * @param {Boolean} isVisible
      */
     loadDataOnScroll(isVisible) {
-      console.log('isVisible :>> ', isVisible);
       if (!isVisible) {
         return;
       } else {
@@ -89,17 +98,56 @@ export default {
   max-width: 1620px;
   margin: 0 auto;
   padding: 0 15px;
-  .page-wrap {
+  .page__wrapper {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    .page-title {
-      padding: 50px 0;
-      font-size: 32px;
-      color: rgb(41, 41, 41);
-      font-weight: bold;
+    .page__header {
+      &-title {
+        padding: 50px 0;
+        font-size: 32px;
+        color: rgb(41, 41, 41);
+        font-weight: bold;
+      }
+      &-row {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @media screen and (max-width: 475px) {
+          flex-direction: column;
+        }
+        .search__wrapper {
+          flex-basis: 50%;
+          display: flex;
+          width: 100%;
+          @media screen and (max-width: 475px) {
+            flex-basis: 100%;
+          }
+        }
+        .add-user__wrapper {
+          display: flex;
+          justify-content: flex-end;
+          @media screen and (max-width: 475px) {
+            width: 100%;
+            margin-bottom: 20px;
+          }
+          .add-user__btn {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: rgb(29, 180, 29);
+            transition: all 0.2s ease-in;
+            &:hover {
+              background-color: rgb(22, 138, 22);
+              transform: scale(1.02);
+            }
+          }
+        }
+      }
     }
-    .page-content {
+    .page__content {
       flex: 1 1 auto;
       .grid-layout {
         display: grid;

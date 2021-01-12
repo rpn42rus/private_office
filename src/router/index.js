@@ -15,6 +15,11 @@ const routes = [
     name: 'ContactsList',
     component: () => import('../views/ContactsList.vue'),
   },
+  {
+    path: '/new_contact',
+    name: 'NewContact',
+    component: () => import('../components/NewContact.vue'),
+  },
 ];
 
 const router = new VueRouter({

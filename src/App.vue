@@ -1,14 +1,11 @@
 <template>
   <div id="app">
-    <contacts-list />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import ContactsList from './views/ContactsList.vue';
-export default {
-  components: { ContactsList },
-};
+export default {};
 </script>
 
 <style lang="scss">
