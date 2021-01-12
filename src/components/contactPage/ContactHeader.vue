@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'HeaderComponent',
+  name: 'ContactHeader',
 };
 </script>
 

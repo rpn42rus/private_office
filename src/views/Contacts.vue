@@ -1,17 +1,17 @@
 <template>
   <div>
-    <header-component />
-    <contacts-list />
+    <contact-header />
+    <contact-list />
   </div>
 </template>
 
 <script>
-import HeaderComponent from '../components/HeaderComponent.vue';
-import ContactsList from '../components/ContactsList.vue';
-export default {
-  name: 'Contacts',
+import ContactHeader from '../components/contactPage/ContactHeader.vue';
+import ContactList from '../components/contactPage/ContactList.vue';
 
-  components: { HeaderComponent, ContactsList },
+export default {
+  components: { ContactHeader, ContactList },
+  name: 'Contacts',
 };
 </script>
 

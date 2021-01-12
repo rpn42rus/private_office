@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'SearchField',
+  name: 'ContactSearch',
 
   data() {
     return {

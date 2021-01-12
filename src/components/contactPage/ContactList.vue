@@ -7,7 +7,7 @@
           <div class="add-user__wrapper">
             <div class="add-user__btn">+ Добавить контакт</div>
           </div>
-          <search-field
+          <contact-search
             class="search__wrapper"
             @getSearchResult="(searchText = $event), getContactData(1)"
           />
@@ -33,13 +33,13 @@
 </template>
 
 <script>
-import ContactCard from '../components/ContactCard';
-import Preloader from '../components/Preloader.vue';
-import SearchField from '../components/SearchField.vue';
+import ContactCard from './ContactCard';
+import Preloader from '../common/Preloader';
+import ContactSearch from './ContactSearch';
 
 export default {
-  components: { ContactCard, Preloader, SearchField },
-  name: 'ContactsList',
+  components: { ContactCard, Preloader, ContactSearch },
+  name: 'ContactList',
 
   data() {
     return {

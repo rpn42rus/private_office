@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'NewContact',
+  name: 'ContactModal',
 };
 </script>
 
