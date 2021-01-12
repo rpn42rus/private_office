@@ -1,11 +1,12 @@
 <template>
   <div class="container">
     <div class="page__wrapper">
+      <!-- Шапка страницы -->
       <div class="page__header">
         <div class="page__header-title">Список контактов</div>
         <div class="page__header-row">
           <div class="add-user__wrapper">
-            <div class="add-user__btn">+ Добавить контакт</div>
+            <div class="add-user__btn" @click="openModal">+ Добавить контакт</div>
           </div>
           <contact-search
             class="search__wrapper"
@@ -13,7 +14,7 @@
           />
         </div>
       </div>
-
+      <!-- Контент страницы -->
       <div class="page__content">
         <div class="grid-layout" v-if="characters.length && !error">
           <contact-card
@@ -27,6 +28,12 @@
           Совпадений не найдено...
         </div>
       </div>
+      <!-- Модальное окно -->
+      <transition name="bounce">
+        <contact-modal v-if="showModalContact" @closeModal="closeModal" />
+      </transition>
+
+      <!-- Прелоадер -->
       <preloader :isShowPreloader="loading" />
     </div>
   </div>
@@ -34,11 +41,13 @@
 
 <script>
 import ContactCard from './ContactCard';
-import Preloader from '../common/Preloader';
 import ContactSearch from './ContactSearch';
+import ContactModal from './ContactModal.vue';
+import Preloader from '../common/Preloader';
 
 export default {
-  components: { ContactCard, Preloader, ContactSearch },
+  components: { ContactCard, Preloader, ContactSearch, ContactModal },
+
   name: 'ContactList',
 
   data() {
@@ -48,6 +57,7 @@ export default {
       lastPage: 1, // последняя страница
       loading: false, // флаг для отображения preloader
       searchText: '', // искомый текст
+      showModalContact: false, // флаг отображения модального окна контакта
       error: '', // флаг ошибки
     };
   },
@@ -101,6 +111,22 @@ export default {
         this.getContactData(this.currentPage);
       }
     },
+
+    openModal() {
+      this.showModalContact = true;
+
+      const body = document.getElementsByTagName('body')[0];
+      body.style.overflowY = 'hidden';
+      body.style.paddingRight = 17 + 'px';
+    },
+
+    closeModal() {
+      this.showModalContact = false;
+
+      const body = document.getElementsByTagName('body')[0];
+      body.style.overflowY = '';
+      body.style.paddingRight = '';
+    },
   },
 };
 </script>
@@ -148,11 +174,13 @@ export default {
             color: #fff;
             padding: 10px;
             border-radius: 10px;
-            background-color: rgb(29, 180, 29);
-            transition: all 0.2s ease-in;
+            background: transparent;
+            transition: all 0.3s ease-in;
+            border: 2px solid rgb(29, 180, 29);
+            color: rgb(29, 180, 29);
             &:hover {
-              background-color: rgb(22, 138, 22);
-              transform: scale(1.02);
+              color: #fff;
+              background-color: rgb(29, 180, 29);
               cursor: pointer;
             }
           }
@@ -172,6 +200,36 @@ export default {
         margin: 20px 0;
       }
     }
+  }
+}
+
+.modal-transition-enter-active {
+  transition: all 0.3s ease;
+}
+.modal-transition-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.modal-transition-enter,
+.modal-transition-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>

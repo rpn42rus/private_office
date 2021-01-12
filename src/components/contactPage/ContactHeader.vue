@@ -31,8 +31,10 @@ export default {
       color: #fff;
       &__item {
         padding: 10px 15px;
+        margin-right: 15px;
         border: 2px solid #fff;
         border-radius: 10px;
+        transition: all 0.3s ease-in;
         cursor: pointer;
         &:hover {
           background-color: #fff;

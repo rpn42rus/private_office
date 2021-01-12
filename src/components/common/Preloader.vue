@@ -1,6 +1,6 @@
 <template>
   <div class="preloader-wrap" v-show="isShowPreloader">
-    <atom-spinner :animation-duration="1000" :size="100" :color="'#ff1d5e'" />
+    <atom-spinner :animation-duration="1000" :size="100" :color="'rgb(29, 180, 29)'" />
   </div>
 </template>
 
