@@ -6,7 +6,9 @@
         <div class="page__header-title">Список контактов</div>
         <div class="page__header-row">
           <div class="add-user__wrapper">
-            <div class="add-user__btn" @click="openModal">+ Добавить контакт</div>
+            <div class="add-user__btn" @click="openModal((modalMode = 'add'))">
+              + Добавить контакт
+            </div>
           </div>
           <contact-search
             class="search__wrapper"
@@ -21,6 +23,7 @@
             v-for="character in characters"
             :key="character.id"
             :character="character"
+            @openEditModal="openModal"
           />
           <div v-observe-visibility="loadDataOnScroll"></div>
         </div>
@@ -30,7 +33,7 @@
       </div>
       <!-- Модальное окно -->
       <transition name="modal-transition">
-        <contact-modal v-if="showModalContact" @closeModal="closeModal" />
+        <contact-modal v-if="showModalContact" @closeModal="closeModal" :modalMode="modalMode" />
       </transition>
 
       <!-- Прелоадер -->
@@ -58,6 +61,7 @@ export default {
       loading: false, // флаг для отображения preloader
       searchText: '', // искомый текст
       showModalContact: false, // флаг отображения модального окна контакта
+      modalMode: '', // режим открытия модального окна(добавление/редактирование)
       error: '', // флаг ошибки
     };
   },
@@ -112,8 +116,9 @@ export default {
       }
     },
 
-    openModal() {
+    openModal(mode) {
       this.showModalContact = true;
+      this.modalMode = mode;
 
       const body = document.getElementsByTagName('body')[0];
       body.style.overflowY = 'hidden';
@@ -122,6 +127,7 @@ export default {
 
     closeModal() {
       this.showModalContact = false;
+      this.modalMode = '';
 
       const body = document.getElementsByTagName('body')[0];
       body.style.overflowY = '';
