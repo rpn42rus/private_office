@@ -7,7 +7,7 @@
       <div class="card-name">{{ character.name }}</div>
       <div class="card-controls">
         <div class="btn-wrap">
-          <button class="btn" @click="$emit('openEditModal', 'edit')">Edit</button>
+          <button class="btn" @click="$emit('openEditModal', 'edit', character)">Edit</button>
         </div>
         <div class="btn-wrap">
           <button class="btn">Remove</button>

@@ -13,12 +13,31 @@
       <div class="modal__content-body">
         <div class="body__left-block">
           <div class="contact-photo" v-if="modalMode === 'edit'">
-            <img class="character-image" :src="character.image" alt="" />
+            <img :src="contactInfo.image" alt="" />
           </div>
         </div>
         <div class="body__right-block">
-          <div class="contact-name"></div>
+          <div class="contact-row">
+            <label class="contact-label" for="name">Имя:</label>
+            <input class="contact-input" name="name" type="text" v-model="contactInfo.name" />
+          </div>
+          <div class="contact-row">
+            <label class="contact-label" for="gender">Пол:</label>
+            <input class="contact-input" name="gender" type="text" v-model="contactInfo.gender" />
+          </div>
+          <div class="contact-row">
+            <label class="contact-label" for="status">Статус:</label>
+            <input class="contact-input" name="status" type="text" v-model="contactInfo.status" />
+          </div>
+          <div class="contact-row">
+            <label class="contact-label" for="species">Статус:</label>
+            <input class="contact-input" name="species" type="text" v-model="contactInfo.species" />
+          </div>
         </div>
+      </div>
+      <div class="modal__content-footer">
+        <div class="save-btn">Сохранить</div>
+        <div class="cancel-btn">Отменить</div>
       </div>
     </div>
   </div>
@@ -30,6 +49,7 @@ export default {
 
   props: {
     modalMode: String,
+    contactInfo: Object,
   },
 
   methods: {
@@ -68,7 +88,6 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 20px;
       background-color: #292828;
       .modal__header-title {
         color: #fff;
@@ -78,9 +97,39 @@ export default {
     &-body {
       width: 100%;
       display: flex;
-      &__right-block,
-      &__left-block {
-        width: 50%;
+      padding: 2%;
+      .body__right-block {
+        width: 53%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 2%;
+        .contact-row {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-bottom: 15px;
+          .contact-label {
+            margin-bottom: 5px;
+            font-weight: bold;
+          }
+          .contact-input {
+            width: 100%;
+            border-radius: 3px;
+            padding: 1%;
+          }
+        }
+      }
+      .body__left-block {
+        width: 40%;
+        .contact-photo {
+          width: 100%;
+          img {
+            max-width: 100%;
+            object-fit: cover;
+          }
+        }
       }
     }
   }

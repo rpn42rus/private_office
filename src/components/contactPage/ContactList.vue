@@ -52,7 +52,12 @@
 
       <!-- Модальное окно -->
       <transition name="modal-transition">
-        <contact-modal v-if="showModalContact" @closeModal="closeModal" :modalMode="modalMode" />
+        <contact-modal
+          v-if="showModalContact"
+          @closeModal="closeModal"
+          :modalMode="modalMode"
+          :contactInfo="selectedContact"
+        />
       </transition>
 
       <!-- Прелоадер -->
@@ -80,6 +85,7 @@ export default {
       currentPage: 1, // текущая страница
       showModalContact: false, // флаг отображения модального окна контакта
       modalMode: '', // режим открытия модального окна(добавление/редактирование)
+      selectedContact: {},
     };
   },
 
@@ -132,7 +138,8 @@ export default {
      * Метод открытия модального окна
      * @param {String} mode
      */
-    openModal(mode) {
+    openModal(mode, contactInfo = {}) {
+      this.selectedContact = contactInfo;
       this.showModalContact = true;
       this.modalMode = mode;
 
