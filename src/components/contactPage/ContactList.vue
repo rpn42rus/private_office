@@ -12,25 +12,44 @@
           </div>
           <contact-search
             class="search__wrapper"
-            @getSearchResult="(searchText = $event), getContactData(1)"
+            @getSearchResult="(searchText = $event), findContacts()"
           />
         </div>
       </div>
       <!-- Контент страницы -->
       <div class="page__content">
-        <div class="grid-layout" v-if="characters.length && !error">
+        <div class="grid-layout" v-if="contacts.length && !error">
           <contact-card
-            v-for="character in characters"
+            v-for="character in contacts"
             :key="character.id"
             :character="character"
             @openEditModal="openModal"
           />
-          <div v-observe-visibility="loadDataOnScroll"></div>
         </div>
-        <div class="no-result" v-else-if="!characters.length && error">
+        <div class="no-result" v-else-if="error">
           Совпадений не найдено...
         </div>
       </div>
+      <!-- Подвал страницы -->
+      <div class="page__footer" v-if="!error">
+        <div class="pagination-controls">
+          <div
+            class="pagination-btn"
+            :class="{ 'disabled-btn': info.prev === null }"
+            @click="goToPage(info.prev, 'prev')"
+          >
+            prev
+          </div>
+          <div
+            class="pagination-btn"
+            :class="{ 'disabled-btn': info.next === null }"
+            @click="goToPage(info.next, 'next')"
+          >
+            next
+          </div>
+        </div>
+      </div>
+
       <!-- Модальное окно -->
       <transition name="modal-transition">
         <contact-modal v-if="showModalContact" @closeModal="closeModal" :modalMode="modalMode" />
@@ -48,6 +67,8 @@ import ContactSearch from './ContactSearch';
 import ContactModal from './ContactModal.vue';
 import Preloader from '../common/Preloader';
 
+import { mapState, mapActions } from 'vuex';
+
 export default {
   components: { ContactCard, Preloader, ContactSearch, ContactModal },
 
@@ -55,67 +76,62 @@ export default {
 
   data() {
     return {
-      characters: [], //персонажи(контакты)
-      currentPage: 1, // текущая страница
-      lastPage: 1, // последняя страница
-      loading: false, // флаг для отображения preloader
       searchText: '', // искомый текст
+      currentPage: 1, // текущая страница
       showModalContact: false, // флаг отображения модального окна контакта
       modalMode: '', // режим открытия модального окна(добавление/редактирование)
-      error: '', // флаг ошибки
     };
   },
 
   mounted() {
-    this.getContactData(1);
+    this.getData(1);
+  },
+
+  computed: {
+    ...mapState(['contacts', 'info', 'error', 'loading']),
   },
 
   methods: {
-    /**
-     * Метод получение данных о контактах
-     * @param {Number} page
-     */
-    async getContactData(page) {
-      if (page > this.lastPage) {
-        return;
-      }
-      this.loading = true;
-
-      if (page == 1) {
-        this.currentPage = 1;
-        this.characters = [];
-      }
-
-      await this.axios
-        .get(
-          `https://rickandmortyapi.com/api/character/?page=${this.currentPage}&name=${this.searchText}`,
-        )
-        .then(response => {
-          this.characters.push(...response.data.results);
-          this.lastPage = response.data.info.pages;
-          this.error = false;
-          this.loading = false;
-        })
-        .catch(() => {
-          this.characters = [];
-          this.error = true;
-          this.loading = false;
-        });
-    },
+    ...mapActions(['getData']),
 
     /**
-     * Метод подгружает данные по мере прокрутки страницы
-     * @param {Boolean} isVisible
+     * Метод перехода на следующую/предыдущую страницу списка контактов
+     * @param {String} page
+     * @param {String} direction
      */
-    loadDataOnScroll(isVisible) {
-      if (!isVisible) {
+    goToPage(page, direction) {
+      if (page === null) {
         return;
-      } else {
+      }
+
+      let numberPage = parseInt(page.match(/\d+/));
+
+      this.getData({ page: numberPage, text: this.searchText });
+
+      if (direction === 'next') {
         this.currentPage++;
-        this.getContactData(this.currentPage);
+      } else if (direction === 'prev') {
+        this.currentPage--;
       }
     },
 
+    /**
+     * Метод поиска контактов
+     */
+    findContacts() {
+      this.currentPage = 1;
+      try {
+        this.getData({ page: this.currentPage, text: this.searchText });
+      } catch (error) {
+        console.log('error :>> ', error);
+        this.error = true;
+      }
+    },
+
+    /**
+     * Метод открытия модального окна
+     * @param {String} mode
+     */
     openModal(mode) {
       this.showModalContact = true;
       this.modalMode = mode;
@@ -125,6 +141,9 @@ export default {
       body.style.paddingRight = 17 + 'px';
     },
 
+    /**
+     * Метод закрытия модального окна
+     */
     closeModal() {
       this.showModalContact = false;
       this.modalMode = '';
@@ -145,7 +164,8 @@ export default {
   .page__wrapper {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: calc(100vh - 70px);
+    /* Шапка страницы*/
     .page__header {
       &-title {
         padding: 50px 0;
@@ -193,6 +213,7 @@ export default {
         }
       }
     }
+    /* Контент страницы*/
     .page__content {
       flex: 1 1 auto;
       .grid-layout {
@@ -206,9 +227,38 @@ export default {
         margin: 20px 0;
       }
     }
+    /* Подвал страницы*/
+    .page__footer {
+      .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 30px 0;
+        .pagination-btn {
+          padding: 10px 30px;
+          border: 2px solid rgb(41, 41, 41);
+          border-radius: 10px;
+          &:last-of-type {
+            margin-left: 15px;
+          }
+          &:hover {
+            cursor: pointer;
+            background-color: rgb(41, 41, 41);
+            color: #fff;
+          }
+        }
+        .disabled-btn {
+          pointer-events: none;
+          background-color: #dedede;
+          border: 2px solid #acacac;
+          color: #acacac;
+        }
+      }
+    }
   }
 }
 
+/* Анимация отображения модального окна */
 .modal-transition-enter-active {
   animation: modal-transition-in 0.5s;
 }
