@@ -3,9 +3,6 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import axios from 'axios';
-import VueObserveVisibility from 'vue-observe-visibility';
-
-Vue.use(VueObserveVisibility);
 
 Vue.prototype.axios = axios;
 Vue.config.productionTip = false;
