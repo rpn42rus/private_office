@@ -2,8 +2,8 @@
   <header class="header">
     <div class="container">
       <div class="menu">
-        <div class="menu__item">
-          Выйти
+        <div class="btn-wrap">
+          <button-component :buttonStyles="buttonStyles" :text="text" />
         </div>
       </div>
     </div>
@@ -11,8 +11,24 @@
 </template>
 
 <script>
+import ButtonComponent from '../common/ButtonComponent.vue';
 export default {
+  components: { ButtonComponent },
   name: 'ContactHeader',
+
+  data() {
+    return {
+      buttonStyles: {
+        color: '#fff',
+        colorHover: 'rgb(37, 35, 35)',
+        bgColor: 'transparent',
+        bgColorHover: '#fff',
+        border: '2px solid #fff',
+        marginRight: '15px',
+      },
+      text: 'Выйти',
+    };
+  },
 };
 </script>
 
@@ -29,17 +45,8 @@ export default {
       justify-content: flex-end;
       align-items: center;
       color: #fff;
-      &__item {
-        padding: 10px 15px;
+      .btn-wrap {
         margin-right: 15px;
-        border: 2px solid #fff;
-        border-radius: 10px;
-        transition: all 0.3s ease-in;
-        cursor: pointer;
-        &:hover {
-          background-color: #fff;
-          color: rgb(37, 35, 35);
-        }
       }
     }
   }
