@@ -5,7 +5,7 @@
     @mouseover="event => changeColor(event)"
     @mouseleave="event => originalColor(event)"
   >
-    {{ text }}
+    {{ textButton }}
   </div>
 </template>
 
@@ -18,20 +18,17 @@ export default {
       type: Object,
       required: true,
     },
-    text: {
+    textButton: {
       type: String,
       required: true,
     },
   },
-
-  mounted() {},
 
   methods: {
     basicButtonStyle() {
       return {
         color: this.buttonStyles.color,
         border: this.buttonStyles.border,
-        marginRight: this.buttonStyles.marginRight,
       };
     },
     changeColor(event) {

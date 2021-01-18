@@ -36,15 +36,25 @@
         </div>
       </div>
       <div class="modal__content-footer">
-        <div class="save-btn">Сохранить</div>
-        <div class="cancel-btn">Отменить</div>
+        <div class="save-btn" @click="saveContact">
+          <button-component :buttonStyles="buttonSaveStyles" :textButton="textButtonSave" />
+        </div>
+        <div class="cancel-btn" @click="closeModalWindow">
+          <button-component :buttonStyles="buttonCancelStyles" :textButton="textButtonCancel" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ButtonComponent from '../common/ButtonComponent.vue';
+
+import { mapActions } from 'vuex';
+
 export default {
+  components: { ButtonComponent },
+
   name: 'ContactModal',
 
   props: {
@@ -52,7 +62,46 @@ export default {
     contactInfo: Object,
   },
 
+  data() {
+    return {
+      buttonSaveStyles: {
+        color: 'rgb(29, 180, 29)',
+        colorHover: '#fff',
+        bgColor: 'transparent',
+        bgColorHover: 'rgb(29, 180, 29)',
+        border: '2px solid rgb(29, 180, 29)',
+      },
+      buttonCancelStyles: {
+        color: 'rgb(181, 67, 49)',
+        colorHover: '#fff',
+        bgColor: 'transparent',
+        bgColorHover: 'rgb(181, 67, 49)',
+        border: '2px solid rgb(181, 67, 49)',
+      },
+
+      textButtonSave: 'Сохранить',
+      textButtonCancel: 'Отменить',
+    };
+  },
+
   methods: {
+    ...mapActions(['saveEditContact', 'saveNewContact']),
+
+    /**
+     * Метод сохранения контакта при добавлении/редактировании
+     */
+    saveContact() {
+      if (this.modalMode === 'edit') {
+        this.saveEditContact(this.contactInfo);
+      } else {
+        this.saveNewContact(this.contactInfo);
+      }
+      this.closeModalWindow();
+    },
+
+    /**
+     * Закрытие модального окна
+     */
     closeModalWindow() {
       this.$emit('closeModal');
     },
@@ -130,6 +179,15 @@ export default {
             object-fit: cover;
           }
         }
+      }
+    }
+    &-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 2%;
+      margin-right: 1%;
+      .save-btn {
+        margin-right: 15px;
       }
     }
   }

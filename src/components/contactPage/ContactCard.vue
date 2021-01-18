@@ -6,11 +6,11 @@
     <div class="card__info-block">
       <div class="card-name">{{ character.name }}</div>
       <div class="card-controls">
-        <div class="btn-wrap">
-          <button class="btn" @click="$emit('openEditModal', 'edit', character)">Edit</button>
+        <div class="btn-wrap" @click="$emit('openEditModal', 'edit', character)">
+          <button-component :buttonStyles="buttonStyles" :textButton="textButtonEdit" />
         </div>
         <div class="btn-wrap">
-          <button class="btn">Remove</button>
+          <button-component :buttonStyles="buttonStyles" :textButton="textButtonRemove" />
         </div>
       </div>
     </div>
@@ -18,11 +18,28 @@
 </template>
 
 <script>
+import ButtonComponent from '../common/ButtonComponent.vue';
 export default {
+  components: { ButtonComponent },
+
   name: 'ContactCard',
 
   props: {
     character: Object,
+  },
+
+  data() {
+    return {
+      buttonStyles: {
+        color: '#f8f9fa',
+        colorHover: '#212529',
+        bgColor: 'transparent',
+        bgColorHover: '#f8f9fa',
+        border: '2px solid #f8f9fa',
+      },
+      textButtonEdit: 'Edit',
+      textButtonRemove: 'Remove',
+    };
   },
 };
 </script>
@@ -95,32 +112,8 @@ export default {
         max-width: 100%;
         position: relative;
         width: 100%;
-        .btn {
-          display: block;
-          width: 100%;
-          color: #f8f9fa;
-          border-color: #f8f9fa;
-          font-weight: 400;
-          text-align: center;
-          user-select: none;
-          background-color: transparent;
-          border: 2px solid #fff;
-          padding: 0.375rem 0.75rem;
-          font-size: 1rem;
-          line-height: 1.5;
-          border-radius: 0.25rem;
-          transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-          text-transform: none;
-          overflow: visible;
-          outline: none;
-          &:hover {
-            cursor: pointer;
-            color: #212529;
-            background-color: #f8f9fa;
-            border-color: #f8f9fa;
-          }
-        }
+        font-size: 1rem;
+        line-height: 1.5;
       }
     }
   }

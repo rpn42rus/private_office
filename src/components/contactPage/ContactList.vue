@@ -7,7 +7,7 @@
         <div class="page__header-row">
           <div class="add-user__wrapper">
             <div class="add-user__btn" @click="openModal((modalMode = 'add'))">
-              + Добавить контакт
+              <button-component :buttonStyles="buttonStyles" :textButton="textButton" />
             </div>
           </div>
           <contact-search
@@ -71,11 +71,12 @@ import ContactCard from './ContactCard';
 import ContactSearch from './ContactSearch';
 import ContactModal from './ContactModal.vue';
 import Preloader from '../common/Preloader';
+import ButtonComponent from '../common/ButtonComponent.vue';
 
 import { mapState, mapActions } from 'vuex';
 
 export default {
-  components: { ContactCard, Preloader, ContactSearch, ContactModal },
+  components: { ContactCard, Preloader, ContactSearch, ContactModal, ButtonComponent },
 
   name: 'ContactList',
 
@@ -86,6 +87,15 @@ export default {
       showModalContact: false, // флаг отображения модального окна контакта
       modalMode: '', // режим открытия модального окна(добавление/редактирование)
       selectedContact: {},
+
+      buttonStyles: {
+        color: 'rgb(29, 180, 29)',
+        colorHover: '#fff',
+        bgColor: 'transparent',
+        bgColorHover: 'rgb(29, 180, 29)',
+        border: '2px solid rgb(29, 180, 29)',
+      },
+      textButton: '+ Добавить контакт',
     };
   },
 
@@ -204,18 +214,6 @@ export default {
             margin-bottom: 20px;
           }
           .add-user__btn {
-            color: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            background: transparent;
-            transition: all 0.3s ease-in;
-            border: 2px solid rgb(29, 180, 29);
-            color: rgb(29, 180, 29);
-            &:hover {
-              color: #fff;
-              background-color: rgb(29, 180, 29);
-              cursor: pointer;
-            }
           }
         }
       }

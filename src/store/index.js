@@ -25,6 +25,17 @@ export default new Vuex.Store({
     SET_LOADING(state, loading) {
       state.loading = loading;
     },
+    EDIT_CONTACT(state, contact) {
+      let index = state.contacts.findIndex(el => {
+        el.id == contact.id;
+      });
+      if (index !== -1) {
+        state.contacts.splice(index, 1, contact);
+      }
+    },
+    ADD_CONTACT(state, contact) {
+      state.contacts.unshift(contact);
+    },
   },
 
   actions: {
@@ -43,6 +54,14 @@ export default new Vuex.Store({
           commit('SET_ERROR', true);
           commit('SET_LOADING', false);
         });
+    },
+
+    saveEditContact({ commit }, contact) {
+      commit('EDIT_CONTACT', contact);
+    },
+
+    saveNewContact({ commit }, contact) {
+      commit('ADD_CONTACT', contact);
     },
   },
 

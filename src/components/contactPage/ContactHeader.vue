@@ -3,7 +3,7 @@
     <div class="container">
       <div class="menu">
         <div class="btn-wrap">
-          <button-component :buttonStyles="buttonStyles" :text="text" />
+          <button-component :buttonStyles="buttonStyles" :textButton="textButton" />
         </div>
       </div>
     </div>
@@ -24,9 +24,8 @@ export default {
         bgColor: 'transparent',
         bgColorHover: '#fff',
         border: '2px solid #fff',
-        marginRight: '15px',
       },
-      text: 'Выйти',
+      textButton: 'Выйти',
     };
   },
 };
