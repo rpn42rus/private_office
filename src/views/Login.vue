@@ -4,7 +4,7 @@
       <div class="login__title">Войти</div>
       <div class="login__fields">
         <label class="field__label">Email:</label>
-        <input class="field__input" required v-model="email" type="email" placeholder="Name" />
+        <input class="field__input" required v-model="email" type="email" placeholder="Login" />
         <label class="field__label">Password:</label>
         <input
           class="field__input"
