@@ -45,7 +45,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['removeContact']),
+    ...mapActions('contacts', ['removeContact']),
   },
 };
 </script>

@@ -104,11 +104,12 @@ export default {
   },
 
   computed: {
-    ...mapState(['contacts', 'info', 'error', 'loading']),
+    ...mapState(['error', 'loading']),
+    ...mapState('contacts', ['contacts', 'info']),
   },
 
   methods: {
-    ...mapActions(['getData']),
+    ...mapActions('contacts', ['getData']),
 
     /**
      * Метод перехода на следующую/предыдущую страницу списка контактов

@@ -85,7 +85,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['saveEditContact', 'saveNewContact']),
+    ...mapActions('contacts', ['saveEditContact', 'saveNewContact']),
 
     /**
      * Метод сохранения контакта при добавлении/редактировании
