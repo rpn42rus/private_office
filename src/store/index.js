@@ -36,6 +36,12 @@ export default new Vuex.Store({
     ADD_CONTACT(state, contact) {
       state.contacts.unshift(contact);
     },
+    REMOVE_CONTACT(state, contact) {
+      let index = state.contacts.findIndex(el => el.id === contact.id);
+      if (index !== -1) {
+        state.contacts.splice(index, 1);
+      }
+    },
   },
 
   actions: {
@@ -62,6 +68,10 @@ export default new Vuex.Store({
 
     saveNewContact({ commit }, contact) {
       commit('ADD_CONTACT', contact);
+    },
+
+    removeContact({ commit }, contact) {
+      commit('REMOVE_CONTACT', contact);
     },
   },
 

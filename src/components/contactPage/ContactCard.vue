@@ -9,7 +9,7 @@
         <div class="btn-wrap" @click="$emit('openEditModal', 'edit', character)">
           <button-component :buttonStyles="buttonStyles" :textButton="textButtonEdit" />
         </div>
-        <div class="btn-wrap">
+        <div class="btn-wrap" @click="removeContact(character)">
           <button-component :buttonStyles="buttonStyles" :textButton="textButtonRemove" />
         </div>
       </div>
@@ -19,6 +19,8 @@
 
 <script>
 import ButtonComponent from '../common/ButtonComponent.vue';
+
+import { mapActions } from 'vuex';
 export default {
   components: { ButtonComponent },
 
@@ -40,6 +42,10 @@ export default {
       textButtonEdit: 'Edit',
       textButtonRemove: 'Remove',
     };
+  },
+
+  methods: {
+    ...mapActions(['removeContact']),
   },
 };
 </script>
