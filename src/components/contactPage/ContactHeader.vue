@@ -2,7 +2,8 @@
   <header class="header">
     <div class="container">
       <div class="menu">
-        <div class="btn-wrap">
+        <div class="user__name">{{ userName }}</div>
+        <div class="btn-wrap" @click="logoutSystem">
           <button-component :buttonStyles="buttonStyles" :textButton="textButton" />
         </div>
       </div>
@@ -11,6 +12,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
+
 import ButtonComponent from '../common/ButtonComponent.vue';
 export default {
   components: { ButtonComponent },
@@ -28,6 +31,19 @@ export default {
       textButton: 'Выйти',
     };
   },
+
+  computed: {
+    ...mapState('auth', ['userName']),
+  },
+
+  methods: {
+    ...mapActions('auth', ['logout']),
+
+    async logoutSystem() {
+      await this.logout();
+      this.$router.push('/login');
+    },
+  },
 };
 </script>
 
@@ -44,6 +60,9 @@ export default {
       justify-content: flex-end;
       align-items: center;
       color: #fff;
+      .user__name {
+        margin-right: 30px;
+      }
       .btn-wrap {
         margin-right: 15px;
       }

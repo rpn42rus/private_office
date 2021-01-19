@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="login" @submit.prevent="login">
+    <form class="login" @submit.prevent="submitHandler">
       <div class="login__title">Войти</div>
       <div class="login__fields">
         <label class="field__label">Email:</label>
@@ -49,6 +49,7 @@
 
 <script>
 import { email, required, minLength } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Login',
@@ -72,18 +73,25 @@ export default {
   },
 
   methods: {
-    login() {
+    ...mapActions('auth', ['login']),
+
+    async submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
       }
 
-      this.$router.push('/');
+      const formData = {
+        email: this.email,
+        password: this.password,
+      };
 
-      // const formData = {
-      //   email: this.email,
-      //   password: this.password,
-      // };
+      try {
+        await this.login(formData);
+        this.$router.push('/');
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
 
       // let email = this.email;
       // let password = this.password;

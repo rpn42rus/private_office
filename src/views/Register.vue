@@ -1,8 +1,9 @@
 <template>
   <div>
-    <form class="reg" @submit.prevent="reg">
+    <form class="reg" @submit.prevent="registerUser">
       <div class="reg__title">Регистрация</div>
       <div class="reg__fields">
+        <!-- Поле с именем -->
         <label class="field__label">Name:</label>
         <input
           class="field__input"
@@ -18,6 +19,7 @@
         <small class="invalid" v-else-if="$v.name.$dirty && !$v.name.minLength"
           >Имя должно состоять из {{ $v.name.$params.minLength.min }} символов
         </small>
+        <!-- Поле с email -->
         <label class="field__label">Email:</label>
         <input
           class="field__input"
@@ -33,6 +35,7 @@
         <small class="invalid" v-else-if="$v.email.$dirty && !$v.email.email"
           >Введите корректный email</small
         >
+        <!-- Поле с password -->
         <label class="field__label">Password:</label>
         <input
           class="field__input"
@@ -53,10 +56,6 @@
           {{ password.length }} символов</small
         >
       </div>
-      <div class="reg__checkbox">
-        <input type="checkbox" id="checkbox" v-model="agree" />
-        <label for="checkbox">С правилами согласен</label>
-      </div>
 
       <button class="reg__btn" type="submit">Зарегистрироваться</button>
     </form>
@@ -65,6 +64,7 @@
 
 <script>
 import { email, required, minLength } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -89,13 +89,12 @@ export default {
       required,
       minLength: minLength(4),
     },
-    agree: {
-      cheched: value => value,
-    },
   },
 
   methods: {
-    reg() {
+    ...mapActions('auth', ['register']),
+
+    async registerUser() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
@@ -106,10 +105,12 @@ export default {
         email: this.email,
         password: this.password,
       };
-
-      console.log('formData :>> ', formData);
-
-      this.$router.push('/');
+      try {
+        await this.register(formData);
+        this.$router.push('/');
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
     },
   },
 };
