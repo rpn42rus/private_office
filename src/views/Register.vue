@@ -4,7 +4,17 @@
       <div class="reg__title">Регистрация</div>
       <div class="reg__fields">
         <label class="field__label">Name:</label>
-        <input class="field__input" required v-model="name" type="text" placeholder="Name" />
+        <input
+          class="field__input"
+          required
+          v-model.trim="$v.name.$model"
+          type="text"
+          placeholder="Name"
+        />
+        <div class="error" v-if="!$v.name.required">Field is required</div>
+        <div class="error" v-if="!$v.name.minLength">
+          Name must have at least {{ $v.name.$params.minLength.min }} letters.
+        </div>
         <label class="field__label">Email:</label>
         <input class="field__input" required v-model="email" type="email" placeholder="Email" />
         <label class="field__label">Password:</label>
@@ -22,7 +32,24 @@
 </template>
 
 <script>
-export default {};
+import { required, minLength } from 'vuelidate/lib/validators';
+
+export default {
+  data() {
+    return {
+      name: '',
+      email: '',
+      password: '',
+    };
+  },
+
+  validations: {
+    name: {
+      required,
+      minLength: minLength(4),
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

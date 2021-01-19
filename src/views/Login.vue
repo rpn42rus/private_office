@@ -4,15 +4,39 @@
       <div class="login__title">Войти</div>
       <div class="login__fields">
         <label class="field__label">Email:</label>
-        <input class="field__input" required v-model="email" type="email" placeholder="Login" />
+        <input
+          class="field__input"
+          v-model.trim="email"
+          type="email"
+          placeholder="Login"
+          :class="{
+            invalid:
+              ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email),
+          }"
+        />
+        <small class="invalid" v-if="$v.email.$dirty && !$v.email.required">Заполните поле</small>
+        <small class="invalid" v-else-if="$v.email.$dirty && !$v.email.email"
+          >Введите корректный email</small
+        >
         <label class="field__label">Password:</label>
         <input
           class="field__input"
-          required
-          v-model="password"
+          :class="{
+            invalid:
+              ($v.password.$dirty && !$v.password.required) ||
+              ($v.password.$dirty && !$v.password.minLength),
+          }"
+          v-model.trim="password"
           type="password"
           placeholder="Password"
         />
+        <small class="invalid" v-if="$v.password.$dirty && !$v.password.required"
+          >Заполните поле</small
+        >
+        <small class="invalid" v-else-if="$v.password.$dirty && !$v.password.minLength"
+          >Пароль должен быть не менее {{ $v.password.$params.minLength.min }} символов, сейчас
+          {{ password.length }} символов</small
+        >
       </div>
       <button class="login__btn" type="submit">Login</button>
       <div class="login__register-link">
@@ -24,6 +48,8 @@
 </template>
 
 <script>
+import { email, required, minLength } from 'vuelidate/lib/validators';
+
 export default {
   name: 'Login',
 
@@ -34,8 +60,31 @@ export default {
     };
   },
 
+  validations: {
+    email: {
+      email,
+      required,
+    },
+    password: {
+      required,
+      minLength: minLength(4),
+    },
+  },
+
   methods: {
     login() {
+      if (this.$v.$invalid) {
+        this.$v.$touch();
+        return;
+      }
+
+      this.$router.push('/');
+
+      // const formData = {
+      //   email: this.email,
+      //   password: this.password,
+      // };
+
       // let email = this.email;
       // let password = this.password;
       // this.$store
@@ -92,5 +141,8 @@ export default {
       cursor: pointer;
     }
   }
+}
+.invalid {
+  color: red;
 }
 </style>
