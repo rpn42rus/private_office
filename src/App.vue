@@ -10,10 +10,14 @@ export default {};
 
 <style lang="scss">
 * {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
-input {
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 </style>

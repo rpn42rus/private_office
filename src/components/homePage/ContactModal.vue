@@ -15,6 +15,9 @@
           <div class="contact-photo" v-if="modalMode === 'edit'">
             <img :src="contactInfo.image" alt="" />
           </div>
+          <div class="contact-photo" v-else>
+            <img src="../../assets/default.jpeg" alt="" />
+          </div>
         </div>
         <div class="body__right-block">
           <div class="contact-row">
@@ -148,7 +151,7 @@ export default {
       display: flex;
       padding: 2%;
       .body__right-block {
-        width: 53%;
+        width: 60%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -174,6 +177,7 @@ export default {
         width: 40%;
         .contact-photo {
           width: 100%;
+          margin-top: 23px;
           img {
             max-width: 100%;
             object-fit: cover;
@@ -184,8 +188,7 @@ export default {
     &-footer {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 2%;
-      margin-right: 1%;
+      padding: 0 2% 2%;
       .save-btn {
         margin-right: 15px;
       }

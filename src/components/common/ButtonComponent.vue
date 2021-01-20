@@ -48,6 +48,7 @@ export default {
   padding: 10px 15px;
   border-radius: 10px;
   transition: all 0.3s ease-in;
+  text-align: center;
   cursor: pointer;
 }
 </style>
