@@ -4,12 +4,12 @@ export default {
   namespaced: true,
 
   state: {
-    userName: '',
+    userEmail: '',
   },
 
   mutations: {
-    SET_USER_NAME(state, name) {
-      state.userName = name;
+    SET_USER_EMAIL(state, email) {
+      state.userEmail = email;
     },
   },
 
@@ -23,6 +23,7 @@ export default {
       try {
         commit('SET_LOADING', true, { root: true });
         await firebase.auth().signInWithEmailAndPassword(email, password);
+        commit('SET_USER_EMAIL', email);
       } catch (error) {
         commit('SET_LOADING', false, { root: true });
         throw error;
@@ -53,7 +54,7 @@ export default {
           .set({
             name,
           });
-        commit('SET_USER_NAME', name);
+        commit('SET_USER_EMAIL', email);
       } catch (error) {
         commit('SET_LOADING', false, { root: true });
         console.log('error :>> ', error);

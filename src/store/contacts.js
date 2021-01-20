@@ -43,12 +43,10 @@ export default {
         .then(response => {
           commit('SET_CONTACTS', response.data.results);
           commit('SET_INFO', response.data.info);
-          commit('SET_ERROR', false, { root: true });
           commit('SET_LOADING', false, { root: true });
         })
         .catch(err => {
           console.log('err :>> ', err);
-          commit('SET_ERROR', true, { root: true });
           commit('SET_LOADING', false, { root: true });
         });
     },

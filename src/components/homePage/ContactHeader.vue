@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container">
       <div class="menu">
-        <div class="user__name">{{ userName }}</div>
+        <div class="user__name">Ваш профиль:{{ userEmail }}</div>
         <div class="btn-wrap" @click="logoutSystem">
           <button-component :buttonStyles="buttonStyles" :textButton="textButton" />
         </div>
@@ -31,13 +31,11 @@ export default {
         border: '2px solid #fff',
       },
       textButton: 'Выйти',
-
-      textNotification: '',
     };
   },
 
   computed: {
-    ...mapState('auth', ['userName']),
+    ...mapState('auth', ['userEmail']),
   },
 
   methods: {
@@ -46,7 +44,6 @@ export default {
     async logoutSystem() {
       await this.logout();
       this.$router.push('/login');
-      this.textNotification = 'Вы вышли из системы';
     },
   },
 };

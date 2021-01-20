@@ -9,14 +9,10 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    error: false, // флаг ошибки
     loading: false, // флаг для отображения прелоадера
   },
 
   mutations: {
-    SET_ERROR(state, error) {
-      state.error = error;
-    },
     SET_LOADING(state, loading) {
       state.loading = loading;
     },
