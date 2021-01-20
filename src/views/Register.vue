@@ -59,20 +59,27 @@
 
       <button class="reg__btn" type="submit">Зарегистрироваться</button>
     </form>
+    <transition name="fade">
+      <notification v-if="notificationIsShow === true" :text="textNotification" />
+    </transition>
   </div>
 </template>
 
 <script>
 import { email, required, minLength } from 'vuelidate/lib/validators';
 import { mapActions } from 'vuex';
+import Notification from '../components/common/Notification.vue';
 
 export default {
+  components: { Notification },
+
   data() {
     return {
       name: '',
       email: '',
       password: '',
-      agree: false,
+      textNotification: '',
+      notificationIsShow: false,
     };
   },
 
@@ -109,7 +116,14 @@ export default {
         await this.register(formData);
         this.$router.push('/');
       } catch (error) {
-        console.log('error :>> ', error);
+        if (error.code == ' auth/email-already-in-use') {
+          this.textNotification = 'Такой пользователь уже существует';
+          this.notificationIsShow = true;
+        }
+
+        setTimeout(() => {
+          this.notificationIsShow = false;
+        }, 4000);
       }
     },
   },

@@ -44,20 +44,27 @@
         <router-link to="/register"> Зарегистрироваться</router-link>
       </div>
     </form>
+    <transition name="fade">
+      <notification v-if="notificationIsShow === true" :text="textNotification" />
+    </transition>
   </div>
 </template>
 
 <script>
 import { email, required, minLength } from 'vuelidate/lib/validators';
 import { mapActions } from 'vuex';
+import Notification from '../components/common/Notification.vue';
 
 export default {
+  components: { Notification },
   name: 'Login',
 
   data() {
     return {
       email: '',
       password: '',
+      textNotification: '',
+      notificationIsShow: false,
     };
   },
 
@@ -91,6 +98,21 @@ export default {
         this.$router.push('/');
       } catch (error) {
         console.log('error :>> ', error);
+        if (error.code == 'auth/wrong-password') {
+          this.textNotification = 'Вы ввели не верный пароль';
+          this.notificationIsShow = true;
+        }
+        if (error.code == 'auth/user-not-found') {
+          this.textNotification = 'Такого пользователя не существует';
+          this.notificationIsShow = true;
+        }
+        if (error.code == 'auth/too-many-requests') {
+          this.textNotification = 'Много неудачных попыток входа в систему, попробуйте зайти позже';
+          this.notificationIsShow = true;
+        }
+        setTimeout(() => {
+          this.notificationIsShow = false;
+        }, 4000);
       }
     },
   },
@@ -148,5 +170,14 @@ export default {
 }
 .invalid {
   color: red;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
