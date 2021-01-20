@@ -1,7 +1,7 @@
 <template>
   <div
     class="btn"
-    :style="basicButtonStyle()"
+    :style="getBasicButtonStyle()"
     @mouseover="event => changeColor(event)"
     @mouseleave="event => originalColor(event)"
   >
@@ -25,17 +25,28 @@ export default {
   },
 
   methods: {
-    basicButtonStyle() {
+    /**
+     * Метод получение основных стилей
+     */
+    getBasicButtonStyle() {
       return {
         color: this.buttonStyles.color,
         border: this.buttonStyles.border,
       };
     },
+
+    /**
+     * Метод изменения стилей при наведении
+     */
     changeColor(event) {
       event.target.style.backgroundColor = this.buttonStyles.bgColorHover;
       event.target.style.color = this.buttonStyles.colorHover;
     },
-    originalColor(event) {
+
+    /**
+     * Метод возвращения к оригинальным стилям
+     */
+    returnOriginalColor(event) {
       event.target.style.backgroundColor = this.buttonStyles.bgColor;
       event.target.style.color = this.buttonStyles.color;
     },

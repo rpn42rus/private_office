@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="reg" @submit.prevent="registerUser">
+    <form class="reg" @submit.prevent="submitFormData">
       <div class="reg__title">Регистрация</div>
       <div class="reg__fields">
         <!-- Поле с именем -->
@@ -101,7 +101,10 @@ export default {
   methods: {
     ...mapActions('auth', ['register']),
 
-    async registerUser() {
+    /**
+     * Метод отправки данных формы для регистрации
+     */
+    async submitFormData() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
@@ -112,6 +115,7 @@ export default {
         email: this.email,
         password: this.password,
       };
+
       try {
         await this.register(formData);
         this.$router.push('/');
@@ -120,7 +124,6 @@ export default {
           this.textNotification = 'Такой пользователь уже существует';
           this.notificationIsShow = true;
         }
-
         setTimeout(() => {
           this.notificationIsShow = false;
         }, 4000);

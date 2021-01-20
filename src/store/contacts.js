@@ -12,6 +12,7 @@ export default {
     SET_CONTACTS(state, contacts) {
       state.contacts = contacts;
     },
+
     SET_INFO(state, info) {
       state.info = info;
     },
@@ -24,9 +25,11 @@ export default {
         state.contacts.splice(index, 1, contact);
       }
     },
+
     ADD_CONTACT(state, contact) {
       state.contacts.unshift(contact);
     },
+
     REMOVE_CONTACT(state, contact) {
       let index = state.contacts.findIndex(el => el.id === contact.id);
       if (index !== -1) {
@@ -36,6 +39,11 @@ export default {
   },
 
   actions: {
+    /**
+     * Метод получения данных
+     * @param {Number} page
+     * @param {String} text
+     */
     async getData({ commit }, { page = null, text = '' }) {
       commit('SET_LOADING', true, { root: true });
       return await axios
@@ -51,14 +59,26 @@ export default {
         });
     },
 
+    /**
+     * Метод сохранения контакта при редактировании
+     * @param {Object} contact
+     */
     saveEditContact({ commit }, contact) {
       commit('EDIT_CONTACT', contact);
     },
 
+    /**
+     * Метод сохранения контакта при добавлении
+     * @param {Object} contact
+     */
     saveNewContact({ commit }, contact) {
       commit('ADD_CONTACT', contact);
     },
 
+    /**
+     * Метод удаления контакта
+     * @param {Object} contact
+     */
     removeContact({ commit }, contact) {
       commit('REMOVE_CONTACT', contact);
     },

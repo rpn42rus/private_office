@@ -2,7 +2,9 @@
   <header class="header">
     <div class="container">
       <div class="menu">
-        <div class="user__name">Ваш профиль:{{ userEmail }}</div>
+        <div class="user__name">
+          Ваш профиль: <span>{{ userEmail }}</span>
+        </div>
         <div class="btn-wrap" @click="logoutSystem">
           <button-component :buttonStyles="buttonStyles" :textButton="textButton" />
         </div>
@@ -41,6 +43,9 @@ export default {
   methods: {
     ...mapActions('auth', ['logout']),
 
+    /**
+     * Метод выхода из системы
+     */
     async logoutSystem() {
       await this.logout();
       this.$router.push('/login');
@@ -64,6 +69,9 @@ export default {
       color: #fff;
       .user__name {
         margin-right: 30px;
+        span {
+          font-size: 20px;
+        }
       }
       .btn-wrap {
         margin-right: 15px;

@@ -1,7 +1,10 @@
 <template>
   <div>
-    <form class="login" @submit.prevent="submitHandler">
+    <!-- Форма авторизации -->
+    <form class="login" @submit.prevent="submitFormData">
+      <!-- Заголовок -->
       <div class="login__title">Войти</div>
+      <!-- Поля ввода -->
       <div class="login__fields">
         <label class="field__label">Email:</label>
         <input
@@ -38,12 +41,16 @@
           {{ password.length }} символов</small
         >
       </div>
+      <!-- Кнопка отправки -->
       <button class="login__btn" type="submit">Login</button>
+      <!-- Ссылка на регистрацию -->
       <div class="login__register-link">
         <span>У вас нет аккаунта?</span>
         <router-link to="/register"> Зарегистрироваться</router-link>
       </div>
     </form>
+
+    <!-- Окно уведомления -->
     <transition name="fade">
       <notification v-if="notificationIsShow === true" :text="textNotification" />
     </transition>
@@ -56,8 +63,9 @@ import { mapActions } from 'vuex';
 import Notification from '../components/common/Notification.vue';
 
 export default {
-  components: { Notification },
   name: 'Login',
+
+  components: { Notification },
 
   data() {
     return {
@@ -82,7 +90,10 @@ export default {
   methods: {
     ...mapActions('auth', ['login']),
 
-    async submitHandler() {
+    /**
+     * Метод отправки данных формы
+     */
+    async submitFormData() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
