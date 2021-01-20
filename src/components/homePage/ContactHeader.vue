@@ -15,9 +15,11 @@
 import { mapActions, mapState } from 'vuex';
 
 import ButtonComponent from '../common/ButtonComponent.vue';
+
 export default {
-  components: { ButtonComponent },
   name: 'ContactHeader',
+
+  components: { ButtonComponent },
 
   data() {
     return {
@@ -29,6 +31,8 @@ export default {
         border: '2px solid #fff',
       },
       textButton: 'Выйти',
+
+      textNotification: '',
     };
   },
 
@@ -42,6 +46,7 @@ export default {
     async logoutSystem() {
       await this.logout();
       this.$router.push('/login');
+      this.textNotification = 'Вы вышли из системы';
     },
   },
 };

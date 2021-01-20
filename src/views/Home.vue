@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import ContactHeader from '../components/contactPage/ContactHeader.vue';
-import ContactList from '../components/contactPage/ContactList.vue';
+import ContactHeader from '../components/homePage/ContactHeader.vue';
+import ContactList from '../components/homePage/ContactList.vue';
 
 export default {
   components: { ContactHeader, ContactList },

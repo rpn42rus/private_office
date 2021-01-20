@@ -92,13 +92,6 @@ export default {
       } catch (error) {
         console.log('error :>> ', error);
       }
-
-      // let email = this.email;
-      // let password = this.password;
-      // this.$store
-      //   .dispatch('login', { email, password })
-      //   .then(() => this.$router.push('/'))
-      //   .catch(err => console.log(err));
     },
   },
 };
@@ -115,7 +108,7 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   &__title {
-    margin-bottom: 10px;
+    margin: 10px auto 0;
     font-size: 26px;
   }
   &__fields {
@@ -148,6 +141,9 @@ export default {
       border: 2px solid #000;
       cursor: pointer;
     }
+  }
+  &__register-link {
+    margin: 0 auto;
   }
 }
 .invalid {
